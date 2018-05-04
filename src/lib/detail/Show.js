@@ -20,6 +20,10 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _Card = require('material-ui/Card');
+
+var _Card2 = _interopRequireDefault(_Card);
+
 var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -30,9 +34,9 @@ var _Header = require('../layout/Header');
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _EditActions = require('./EditActions');
+var _ShowActions = require('./ShowActions');
 
-var _EditActions2 = _interopRequireDefault(_EditActions);
+var _ShowActions2 = _interopRequireDefault(_ShowActions);
 
 var _RecordTitle = require('../layout/RecordTitle');
 
@@ -42,20 +46,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var sanitizeRestProps = function sanitizeRestProps(_ref) {
     var actions = _ref.actions,
+        title = _ref.title,
         children = _ref.children,
+        classes = _ref.classes,
         className = _ref.className,
         crudGetOne = _ref.crudGetOne,
-        crudUpdate = _ref.crudUpdate,
+        id = _ref.id,
         data = _ref.data,
+        isLoading = _ref.isLoading,
+        resource = _ref.resource,
         hasCreate = _ref.hasCreate,
         hasEdit = _ref.hasEdit,
         hasList = _ref.hasList,
         hasShow = _ref.hasShow,
-        id = _ref.id,
-        isLoading = _ref.isLoading,
-        resetForm = _ref.resetForm,
-        resource = _ref.resource,
-        title = _ref.title,
         translate = _ref.translate,
         version = _ref.version,
         match = _ref.match,
@@ -64,143 +67,141 @@ var sanitizeRestProps = function sanitizeRestProps(_ref) {
         options = _ref.options,
         locale = _ref.locale,
         permissions = _ref.permissions,
-        undoable = _ref.undoable,
-        rest = (0, _objectWithoutProperties3.default)(_ref, ['actions', 'children', 'className', 'crudGetOne', 'crudUpdate', 'data', 'hasCreate', 'hasEdit', 'hasList', 'hasShow', 'id', 'isLoading', 'resetForm', 'resource', 'title', 'translate', 'version', 'match', 'location', 'history', 'options', 'locale', 'permissions', 'undoable']);
+        rest = (0, _objectWithoutProperties3.default)(_ref, ['actions', 'title', 'children', 'classes', 'className', 'crudGetOne', 'id', 'data', 'isLoading', 'resource', 'hasCreate', 'hasEdit', 'hasList', 'hasShow', 'translate', 'version', 'match', 'location', 'history', 'options', 'locale', 'permissions']);
     return rest;
 };
 
-var EditView = function EditView(_ref2) {
+var ShowView = function ShowView(_ref2) {
     var _ref2$actions = _ref2.actions,
-        actions = _ref2$actions === undefined ? _react2.default.createElement(_EditActions2.default, null) : _ref2$actions,
+        actions = _ref2$actions === undefined ? _react2.default.createElement(_ShowActions2.default, null) : _ref2$actions,
         basePath = _ref2.basePath,
         children = _ref2.children,
+        _ref2$classes = _ref2.classes,
+        classes = _ref2$classes === undefined ? {} : _ref2$classes,
         className = _ref2.className,
         defaultTitle = _ref2.defaultTitle,
+        hasEdit = _ref2.hasEdit,
         hasList = _ref2.hasList,
-        hasShow = _ref2.hasShow,
+        isLoading = _ref2.isLoading,
         record = _ref2.record,
-        redirect = _ref2.redirect,
         resource = _ref2.resource,
-        save = _ref2.save,
         title = _ref2.title,
         version = _ref2.version,
-        rest = (0, _objectWithoutProperties3.default)(_ref2, ['actions', 'basePath', 'children', 'className', 'defaultTitle', 'hasList', 'hasShow', 'record', 'redirect', 'resource', 'save', 'title', 'version']);
+        rest = (0, _objectWithoutProperties3.default)(_ref2, ['actions', 'basePath', 'children', 'classes', 'className', 'defaultTitle', 'hasEdit', 'hasList', 'isLoading', 'record', 'resource', 'title', 'version']);
     return _react2.default.createElement(
         'div',
         (0, _extends3.default)({
-            className: (0, _classnames2.default)('edit-page', className)
+            className: (0, _classnames2.default)('show-page', className)
         }, sanitizeRestProps(rest)),
-        (actions || title) && _react2.default.createElement(_Header2.default, {
-            title: _react2.default.createElement(_RecordTitle2.default, {
-                title: title,
-                record: record,
-                defaultTitle: defaultTitle
+        _react2.default.createElement(
+            'div',
+            { className: classes.card, style: { opacity: isLoading ? 0.8 : 1 } },
+            _react2.default.createElement(_Header2.default, {
+                title: _react2.default.createElement(_RecordTitle2.default, {
+                    title: title,
+                    record: record,
+                    defaultTitle: defaultTitle
+                }),
+                actions: actions,
+                actionProps: {
+                    basePath: basePath,
+                    data: record,
+                    hasList: hasList,
+                    hasEdit: hasEdit,
+                    record: record,
+                    resource: resource
+                }
             }),
-            actions: actions,
-            actionProps: {
+            record && _react2.default.cloneElement(children, {
+                resource: resource,
                 basePath: basePath,
-                data: record,
-                hasShow: hasShow,
-                hasList: hasList,
-                resource: resource
-            }
-        }),
-        record ? _react2.default.cloneElement(children, {
-            save: save,
-            resource: resource,
-            basePath: basePath,
-            record: record,
-            version: version,
-            redirect: typeof children.props.redirect === 'undefined' ? redirect : children.props.redirect
-        }) : _react2.default.createElement(
-            'span',
-            null,
-            '\xA0'
+                record: record,
+                version: version
+            })
         )
     );
 };
 
-EditView.propTypes = {
+ShowView.propTypes = {
     actions: _propTypes2.default.element,
     basePath: _propTypes2.default.string,
     children: _propTypes2.default.element,
     className: _propTypes2.default.string,
     defaultTitle: _propTypes2.default.any,
+    hasEdit: _propTypes2.default.bool,
     hasList: _propTypes2.default.bool,
-    hasShow: _propTypes2.default.bool,
+    isLoading: _propTypes2.default.bool,
     record: _propTypes2.default.object,
-    redirect: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.bool]),
     resource: _propTypes2.default.string,
-    save: _propTypes2.default.func,
     title: _propTypes2.default.any,
     version: _propTypes2.default.number
 };
 
 /**
- * Page component for the Edit view
- * 
- * The `<Edit>` component renders the page title and actions,
+ * Page component for the Show view
+ *
+ * The `<Show>` component renders the page title and actions,
  * fetches the record from the data provider.
  * It is not responsible for rendering the actual form -
- * that's the job of its child component (usually `<SimpleForm>`),
+ * that's the job of its child component (usually `<SimpleShowLayout>`),
  * to which it passes pass the `record` as prop.
  *
- * The `<Edit>` component accepts the following props:
+ * The `<Show>` component accepts the following props:
  *
  * - title
  * - actions
- * 
+ *
  * Both expect an element for value.
- * 
- * @example     
+ *
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
- *     import { Edit, SimpleForm, TextInput } from 'react-admin';
- *     
- *     export const PostEdit = (props) => (
- *         <Edit {...props}>
- *             <SimpleForm>
- *                 <TextInput source="title" />
- *             </SimpleForm>
- *         </Edit>
+ *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
+ *
+ *     export const PostShow = (props) => (
+ *         <Show {...props}>
+ *             <SimpleShowLayout>
+ *                 <TextField source="title" />
+ *             </SimpleShowLayout>
+ *         </Show>
  *     );
  *
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
- *     import { PostEdit } from './posts';
- *     
+ *
+ *     import { PostShow } from './posts';
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
- *             <Resource name="posts" edit={PostEdit} />
+ *             <Resource name="posts" show={PostShow} />
  *         </Admin>
  *     );
  *     export default App;
  */
-var Edit = function Edit(props) {
+var Show = function Show(props) {
     return _react2.default.createElement(
-        _raCore.EditController,
+        _raCore.ShowController,
         props,
         function (controllerProps) {
-            return _react2.default.createElement(EditView, (0, _extends3.default)({}, props, controllerProps));
+            return _react2.default.createElement(ShowView, (0, _extends3.default)({}, props, controllerProps));
         }
     );
 };
 
-Edit.propTypes = {
+Show.propTypes = {
     actions: _propTypes2.default.element,
-    children: _propTypes2.default.node,
+    children: _propTypes2.default.element,
     className: _propTypes2.default.string,
     hasCreate: _propTypes2.default.bool,
     hasEdit: _propTypes2.default.bool,
-    hasShow: _propTypes2.default.bool,
     hasList: _propTypes2.default.bool,
+    hasShow: _propTypes2.default.bool,
     location: _propTypes2.default.object.isRequired,
     match: _propTypes2.default.object.isRequired,
     resource: _propTypes2.default.string.isRequired,
     title: _propTypes2.default.any
 };
 
-exports.default = Edit;
+exports.default = Show;
 module.exports = exports['default'];
