@@ -25,6 +25,7 @@ const styles = {
 };
 
 const sanitizeRestProps = ({
+    authParams,
     TitleClass,
     children,
     classes,
@@ -65,6 +66,7 @@ const sanitizeRestProps = ({
     sort,
     theme,
     toggleItem,
+    emptyJsx,
     ...rest
 }) => rest;
 
@@ -81,6 +83,7 @@ export const ListView = ({
     defaultTitle,
     disableSource,
     displayedFilters,
+    emptyJsx,
     enableSource,
     enabledSources,
     filterValues,
@@ -227,11 +230,15 @@ export const ListView = ({
                         })}
                 </div>
             ) : (
-                <CardContent className={classes.noResults}>
-                    <Typography variant="body1">
-                        {translate('ra.navigation.no_results')}
-                    </Typography>
-                </CardContent>
+                emptyJsx ? (
+                    emptyJsx
+                ) : (
+                    <CardContent className={classes.noResults}>
+                        <Typography variant="body1">
+                            {translate('ra.navigation.no_results')}
+                        </Typography>
+                    </CardContent>
+                )
             )}
         </div>
     );
@@ -253,6 +260,7 @@ ListView.propTypes = {
     defaultTitle: PropTypes.string,
     disableSource: PropTypes.func,
     displayedFilters: PropTypes.object,
+    emptyJsx: PropTypes.node,
     enableSource: PropTypes.func,
     enabledSources: PropTypes.object,
     filterValues: PropTypes.object,
@@ -342,11 +350,12 @@ List.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
+    emptyJsx: PropTypes.node,
     initiallyEnabledSources: PropTypes.arrayOf(PropTypes.string),
     metaSources: PropTypes.arrayOf(PropTypes.string),
     filter: PropTypes.object,
     filters: PropTypes.element,
-    pagination: PropTypes.element,
+    pagination: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     perPage: PropTypes.number.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
