@@ -66,7 +66,6 @@ const sanitizeRestProps = ({
     sort,
     theme,
     toggleItem,
-    emptyJsx,
     ...rest
 }) => rest;
 
@@ -83,7 +82,6 @@ export const ListView = ({
     defaultTitle,
     disableSource,
     displayedFilters,
-    emptyJsx,
     enableSource,
     enabledSources,
     filterValues,
@@ -186,60 +184,37 @@ export const ListView = ({
                     })}
                 </Card>
             )}
-            {isLoading || total > 0 ? (
-                <div key={version}>
-                    {children &&
-                        React.cloneElement(children, {
-                            basePath,
-                            currentSort,
-                            data,
-                            enabledSources,
-                            filterValues,
-                            hasBulkActions: !!bulkActions,
-                            ids,
-                            isLoading,
-                            onSelect,
-                            onToggleItem,
-                            resource,
-                            selectedIds,
-                            setFilters,
-                            setFiltersImmediate,
-                            setSort,
-                            total,
-                            version,
-                        })}
-                    {!isLoading &&
-                        !ids.length && (
-                            <CardContent style={styles.noResults}>
-                                <Typography variant="body1">
-                                    {translate(
-                                        'ra.navigation.no_more_results',
-                                        {
-                                            page,
-                                        }
-                                    )}
-                                </Typography>
-                            </CardContent>
-                        )}
-                    {pagination &&
-                        React.cloneElement(pagination, {
-                            page,
-                            perPage,
-                            setPage,
-                            total,
-                        })}
-                </div>
-            ) : (
-                emptyJsx ? (
-                    emptyJsx
-                ) : (
-                    <CardContent className={classes.noResults}>
-                        <Typography variant="body1">
-                            {translate('ra.navigation.no_results')}
-                        </Typography>
-                    </CardContent>
-                )
-            )}
+
+            <div key={version}>
+                {children &&
+                    React.cloneElement(children, {
+                        basePath,
+                        currentSort,
+                        data,
+                        enabledSources,
+                        filterValues,
+                        hasBulkActions: !!bulkActions,
+                        ids,
+                        isLoading,
+                        onSelect,
+                        onToggleItem,
+                        resource,
+                        selectedIds,
+                        setFilters,
+                        setFiltersImmediate,
+                        setSort,
+                        total,
+                        version,
+                    })}
+
+                {pagination && total > 0 &&
+                    React.cloneElement(pagination, {
+                        page,
+                        perPage,
+                        setPage,
+                        total,
+                    })}
+            </div>
         </div>
     );
 };
@@ -260,7 +235,6 @@ ListView.propTypes = {
     defaultTitle: PropTypes.string,
     disableSource: PropTypes.func,
     displayedFilters: PropTypes.object,
-    emptyJsx: PropTypes.node,
     enableSource: PropTypes.func,
     enabledSources: PropTypes.object,
     filterValues: PropTypes.object,
@@ -350,7 +324,6 @@ List.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    emptyJsx: PropTypes.node,
     initiallyEnabledSources: PropTypes.arrayOf(PropTypes.string),
     metaSources: PropTypes.arrayOf(PropTypes.string),
     filter: PropTypes.object,
