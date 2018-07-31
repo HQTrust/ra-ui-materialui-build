@@ -11,7 +11,7 @@ export const BooleanField = ({ className, source, record, FalseIcon, TrueIcon = 
     if (get(record, source) === false) {
         return (
             <span className={className} {...sanitizeRestProps(rest)}>
-                <FalseIcon />
+                {FalseIcon}
             </span>
         );
     }
@@ -19,7 +19,7 @@ export const BooleanField = ({ className, source, record, FalseIcon, TrueIcon = 
     if (get(record, source) === true) {
         return (
             <span className={className} {...sanitizeRestProps(rest)}>
-                <TrueIcon />
+                {TrueIcon}
             </span>
         );
     }
@@ -30,8 +30,8 @@ export const BooleanField = ({ className, source, record, FalseIcon, TrueIcon = 
 };
 
 BooleanField.propTypes = {
-    FalseIcon: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
-    TrueIcon: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+    FalseIcon: PropTypes.object,
+    TrueIcon: PropTypes.object,
     addLabel: PropTypes.bool,
     basePath: PropTypes.string,
     className: PropTypes.string,
@@ -46,8 +46,8 @@ BooleanField.propTypes = {
 const PureBooleanField = pure(BooleanField);
 
 PureBooleanField.defaultProps = {
-    FalseIcon: MuiFalseIcon,
-    TrueIcon: MuiTrueIcon,
+    FalseIcon: <MuiFalseIcon />,
+    TrueIcon: <MuiTrueIcon />,
     addLabel: true,
 };
 
