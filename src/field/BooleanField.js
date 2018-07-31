@@ -11,8 +11,8 @@ export const BooleanField = ({
     className,
     source,
     record,
-    FalseIcon,
-    TrueIcon,
+    FalseIconClass,
+    TrueIconClass,
     falseIconProps,
     trueIconProps,
     ...rest
